@@ -1,0 +1,2 @@
+-- DROP SCHEMA IF EXISTS `quests`;
+-- CREATE SCHEMA `quests` DEFAULT CHARACTER SET utf8 ;
