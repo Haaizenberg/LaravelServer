@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Http\Requests\Helper;
+namespace App\Http\Requests\Helpers;
 
 class RequestMessages
 {

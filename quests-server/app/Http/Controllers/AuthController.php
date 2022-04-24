@@ -2,8 +2,8 @@
 
 namespace App\Http\Controllers;
 
-use App\Http\Requests\LoginRequest;
-use App\Http\Requests\RegisterRequest;
+use App\Http\Requests\Auth\LoginRequest;
+use App\Http\Requests\Auth\RegisterRequest;
 use App\Models\User;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
@@ -27,7 +27,7 @@ class AuthController extends Controller
             return response('Неверный пароль');
         }
 
-        return $user->createToken($fields['device_name'])->plainTextToken;
+        return response()->json([ 'token' => $user->createToken($fields['device_name'])->plainTextToken ]);
     }
 
 
@@ -47,6 +47,6 @@ class AuthController extends Controller
 
         Auth::login($user, $fields['remember_token'] ?? false);
 
-        return $user->createToken($fields['device_name'])->plainTextToken;
+        return response()->json([ 'token' => $user->createToken($fields['device_name'])->plainTextToken ]);
     }
 }
