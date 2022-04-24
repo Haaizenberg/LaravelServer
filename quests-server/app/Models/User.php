@@ -6,6 +6,8 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
+use Illuminate\Support\Facades\Hash;
+use Illuminate\Support\Facades\Log;
 use Laravel\Sanctum\HasApiTokens;
 
 class User extends Authenticatable
@@ -33,12 +35,41 @@ class User extends Authenticatable
         'remember_token',
     ];
 
-    /**
-     * The attributes that should be cast.
-     *
-     * @var array<string, string>
-     */
-    // protected $casts = [
-    //     'email_verified_at' => 'datetime',
-    // ];
+
+    public static function createUser(array $fields): ?User
+    {
+        try {
+            $user = self::create([
+                'name' => $fields['name'],
+                'email' => $fields['email'],
+                'password' => Hash::make($fields['password']),
+            ]);
+    
+            $user->save();
+        } catch (\Exception $e) {
+            Log::error('Ошибка при создании пользователя', [
+                'message' => $e->getMessage(),
+                'fields' => $fields,
+            ]);
+            $user = null;
+        }
+        
+        return $user;
+    }
+
+
+    public static function getUserForLogin(array $fields): ?User
+    {
+        try {
+            $user = self::where('email', $fields['email'])->first();
+        } catch (\Exception $e) {
+            Log::error('Ошибка при получении пользователя', [
+                'message' => $e->getMessage(),
+                'fields' => $fields,
+            ]);
+            $user = null;
+        }
+        
+        return $user;
+    }
 }

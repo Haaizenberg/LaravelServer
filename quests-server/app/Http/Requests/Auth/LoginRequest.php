@@ -17,6 +17,7 @@ class LoginRequest extends FormRequest
         return [
             'email' => [ 'bail', 'required', 'email:rfc,dns', 'max:255' ],
             'password' => [ 'bail', 'required', 'string', 'max:255' ],
+            'device_name' => [ 'bail', 'required', 'string', 'max:255' ]
         ];
     }
 
@@ -31,6 +32,7 @@ class LoginRequest extends FormRequest
         return [
             'email' => 'email адрес',
             'password' => 'пароль',
+            'device_name' => 'имя устройства',
         ];
     }
 
@@ -50,6 +52,10 @@ class LoginRequest extends FormRequest
             'password.string' => RequestMessages::STRING,
             'password.required' => RequestMessages::REQUIRED,
             'password.max:255' => RequestMessages::MAX_255,
+
+            'device_name.string' => RequestMessages::STRING,
+            'device_name.required' => RequestMessages::REQUIRED,
+            'device_name.max:255' => RequestMessages::MAX_255,
         ];
     }
 }
