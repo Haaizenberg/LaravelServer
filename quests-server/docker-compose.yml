@@ -8,7 +8,7 @@ services:
         uid: 1000
       context: ./
       dockerfile: Dockerfile
-    image: lara
+    image: laravel8
     container_name: quests-app
     working_dir: /var/www/
     volumes:

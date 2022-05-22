@@ -2,7 +2,6 @@
 
 namespace App\Models;
 
-// use Illuminate\Contracts\Auth\MustVerifyEmail;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
@@ -40,7 +39,7 @@ class User extends Authenticatable
     {
         try {
             $user = self::create([
-                'name' => $fields['name'],
+                'name' => $fields['device_name'],
                 'email' => $fields['email'],
                 'password' => Hash::make($fields['password']),
             ]);
@@ -71,5 +70,50 @@ class User extends Authenticatable
         }
         
         return $user;
+    }
+
+
+    public static function getById(string $userId): User|null
+    {
+        try {
+            $user = self::firstWhere('id', $userId);
+        } catch (\Exception $e) {
+            Log::error("Ошибка при получении пользователя с id -> $userId", [
+                'message' => $e->getMessage()
+            ]);
+            $user = null;
+        }
+
+        return $user;
+    }
+
+    public static function getByToken(string $token): User|null
+    {
+        try {
+            $user = self::firstWhere('id', $token);
+        } catch (\Exception $e) {
+            Log::error("Ошибка при получении пользователя с id -> $token", [
+                'message' => $e->getMessage()
+            ]);
+            $user = null;
+        }
+
+        return $user;
+    }
+
+
+    public function deleteApiToken(): bool
+    {
+        try {
+            $this->tokens()->delete();
+            $success = true;
+        } catch (\Exception $e) {
+            Log::error("Ошибка при удалении токена API для пользователя с id -> $this->id", [
+                'message' => $e->getMessage()
+            ]);
+            $success = false;
+        }
+
+        return $success;
     }
 }

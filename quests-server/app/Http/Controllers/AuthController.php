@@ -5,6 +5,9 @@ namespace App\Http\Controllers;
 use App\Http\Requests\Auth\LoginRequest;
 use App\Http\Requests\Auth\RegisterRequest;
 use App\Models\User;
+use Illuminate\Contracts\Routing\ResponseFactory;
+use Illuminate\Http\JsonResponse;
+use Illuminate\Http\Response;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
 
@@ -15,7 +18,7 @@ class AuthController extends Controller
      * 
      * @return string API токен
      */
-    public function login(LoginRequest $request): string
+    public function login(LoginRequest $request): JsonResponse
     {
         $fields = $request->validated();
         $user = User::getUserForLogin($fields);
@@ -27,7 +30,10 @@ class AuthController extends Controller
             return response('Неверный пароль');
         }
 
-        return response()->json([ 'token' => $user->createToken($fields['device_name'])->plainTextToken ]);
+        return response()->json([ 
+            'token' => $user->createToken($fields['device_name'])->plainTextToken,
+            'user_id' => $user->id,
+        ]);
     }
 
 
@@ -36,7 +42,7 @@ class AuthController extends Controller
      * 
      * @return string API токен
      */
-    public function register(RegisterRequest $request): string
+    public function register(RegisterRequest $request): Response|JsonResponse
     {
         $fields = $request->validated();
         $user = User::createUser($fields);
@@ -47,6 +53,21 @@ class AuthController extends Controller
 
         Auth::login($user, $fields['remember_token'] ?? false);
 
-        return response()->json([ 'token' => $user->createToken($fields['device_name'])->plainTextToken ]);
+        return response()->json([ 
+            'token' => $user->createToken($fields['device_name'])->plainTextToken,
+            'user_id' => $user->id,
+        ]);
+    }
+
+
+    /**
+     * Выход из приложения
+     * 
+     * @return string response
+     */
+    public function logout(string $userId): Response|ResponseFactory
+    {
+        $success = User::getById($userId)->deleteApiToken();
+        return $success ? response('OK') : response('Ошибка удаления токена');
     }
 }

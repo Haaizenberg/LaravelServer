@@ -13,31 +13,32 @@ Route::post('/auth/login', [AuthController::class, 'login'])->name('login');
 Route::middleware('auth:sanctum')->group(function () {
     // Действия с пользователем
     Route::prefix('user')->group(function () {
-        Route::get('/{user}', [UserController::class, 'getUser']);
-        Route::get('/{user}/logout', [AuthController::class, 'logout']);
+        Route::get('/{user_id}', [UserController::class, 'getUser']);
+        Route::get('/{user_id}/logout', [AuthController::class, 'logout']);
     });
 
     // Действия с квестами
+    Route::get('/quests', [QuestController::class, 'getQuests']);
     Route::prefix('quest')->group(function () {
         Route::post('/create', [QuestController::class, 'createQuest']);
-        Route::get('/{post}', [QuestController::class, 'getQuest']);
-        Route::put('/{post}/update', [QuestController::class, 'updateQuestInfo']);
-        Route::delete('/{post}/delete', [QuestController::class, 'deleteQuest']);
+        Route::get('/{quest_id}', [QuestController::class, 'getQuest']);
+        Route::put('/{quest_id}/update', [QuestController::class, 'updateQuestInfo']);
+        Route::delete('/{quest_id}/delete', [QuestController::class, 'deleteQuest']);
         
         // Вопросы квеста
         Route::prefix('question')->group(function () {
             Route::post('/create', [QuestController::class, 'createQuestion']);
-            Route::get('/{question}', [QuestController::class, 'getQuestion']);
-            Route::put('/{question}/update', [QuestController::class, 'updateQuestionInfo']);
-            Route::delete('/{question}/delete', [QuestController::class, 'deleteQuestion']);
+            Route::get('/{question_id}', [QuestController::class, 'getQuestion']);
+            Route::put('/{question_id}/update', [QuestController::class, 'updateQuestionInfo']);
+            Route::delete('/{question_id}/delete', [QuestController::class, 'deleteQuestion']);
         });
 
         // Ответы на вопросы
         Route::prefix('answer')->group(function () {
             Route::post('/create', [QuestController::class, 'createAnswer']);
-            Route::get('/{answer}', [QuestController::class, 'getAnswer']);
-            Route::put('/{answer}/update', [QuestController::class, 'updateAnswerInfo']);
-            Route::delete('/{answer}/delete', [QuestController::class, 'deleteAnswer']);
+            Route::get('/{answer_id}', [QuestController::class, 'getAnswer']);
+            Route::put('/{answer_id}/update', [QuestController::class, 'updateAnswerInfo']);
+            Route::delete('/{answer_id}/delete', [QuestController::class, 'deleteAnswer']);
 
             Route::post('/check', [QuestController::class, 'checkAnswers']);
         });
@@ -48,11 +49,11 @@ Route::middleware('auth:sanctum')->group(function () {
         // Геопозиции квеста
         Route::prefix('geoposition')->group(function () {
             Route::post('/create', [QuestController::class, 'createGeoposition']);
-            Route::get('/{geoposition}', [QuestController::class, 'getGeoposition']);
-            Route::put('/{question}/update', [QuestController::class, 'updateGeopositionInfo']);
-            Route::delete('/{geoposition}/delete', [QuestController::class, 'deleteGeoposition']);
+            Route::get('/{geoposition_id}', [QuestController::class, 'getGeoposition']);
+            Route::put('/{geoposition_id}/update', [QuestController::class, 'updateGeopositionInfo']);
+            Route::delete('/{geoposition_id}/delete', [QuestController::class, 'deleteGeoposition']);
 
-            Route::post('/{geoposition}/visited', [QuestController::class, 'visitGeoposition']);
+            Route::post('/{geoposition_id}/visited', [QuestController::class, 'visitGeoposition']);
         });
     });
 });

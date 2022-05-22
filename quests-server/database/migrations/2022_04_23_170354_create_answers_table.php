@@ -18,6 +18,7 @@ return new class extends Migration
             $table->id();
             $table->foreignIdFor(Question::class);
             $table->string('answer', 255);
+            $table->boolean('correct');
             $table->timestamps();
         });
     }

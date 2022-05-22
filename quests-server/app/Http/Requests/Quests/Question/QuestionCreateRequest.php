@@ -3,6 +3,7 @@
 namespace App\Http\Requests\Quests\Question;
 
 use Illuminate\Foundation\Http\FormRequest;
+use Illuminate\Support\Facades\Auth;
 
 class QuestionCreateRequest extends FormRequest
 {
@@ -13,7 +14,7 @@ class QuestionCreateRequest extends FormRequest
      */
     public function authorize()
     {
-        return false;
+        return Auth::check();
     }
 
     /**
