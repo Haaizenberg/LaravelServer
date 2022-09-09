@@ -18,7 +18,7 @@ class AuthController extends Controller
      * 
      * @return string API токен
      */
-    public function login(LoginRequest $request): JsonResponse
+    public function login(LoginRequest $request): JsonResponse|Response
     {
         $fields = $request->validated();
         $user = User::getUserForLogin($fields);

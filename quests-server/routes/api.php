@@ -22,8 +22,8 @@ Route::middleware('auth:sanctum')->group(function () {
     Route::prefix('quest')->group(function () {
         Route::post('/create', [QuestController::class, 'createQuest']);
         Route::get('/{quest_id}', [QuestController::class, 'getQuest']);
-        Route::put('/{quest_id}/update', [QuestController::class, 'updateQuestInfo']);
-        Route::delete('/{quest_id}/delete', [QuestController::class, 'deleteQuest']);
+        Route::put('/{quest_id}', [QuestController::class, 'updateQuestInfo']);
+        Route::delete('/{quest_id}', [QuestController::class, 'deleteQuest']);
         
         // Вопросы квеста
         Route::prefix('question')->group(function () {
