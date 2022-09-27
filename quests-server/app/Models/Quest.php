@@ -15,7 +15,13 @@ class Quest extends Model
         'user_id'
     ];
 
-    public static function createQuest(array $questFields)
+    /**
+     * Создаёт квест в БД
+     * 
+     * @param array $questFields аттрибуты квеста
+     * @return App\Models\Quest созданный квест
+     */
+    public static function createQuest(array $questFields): self
     {
         try {
             $quest = self::create([

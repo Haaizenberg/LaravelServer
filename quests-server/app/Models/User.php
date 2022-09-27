@@ -35,6 +35,13 @@ class User extends Authenticatable
     ];
 
 
+    /**
+     * Создаёт нвого пользователя
+     * 
+     * @param array $fields аттрибуты пользователя
+     * 
+     * @return App\Models\User|null
+     */
     public static function createUser(array $fields): ?User
     {
         try {
@@ -57,6 +64,14 @@ class User extends Authenticatable
     }
 
 
+    /**
+     * Возвращает пользователя с заданным email из БД 
+     * если он существует
+     * 
+     * @param array $fields аттрибуты пользователя
+     * 
+     * @return App\Models\User|null
+     */
     public static function getUserForLogin(array $fields): ?User
     {
         try {
@@ -73,7 +88,15 @@ class User extends Authenticatable
     }
 
 
-    public static function getById(string $userId): User|null
+    /**
+     * Возвращает пользователя по заданному id из БД
+     * если таковой существует
+     * 
+     * @param string $userId id пользователя
+     * 
+     * @return App\Models\User|null
+     */
+    public static function getById(string $userId): ?User
     {
         try {
             $user = self::firstWhere('id', $userId);
@@ -87,7 +110,16 @@ class User extends Authenticatable
         return $user;
     }
 
-    public static function getByToken(string $token): User|null
+    
+    /**
+     * Возвращает пользователя по заданному токену API из БД
+     * если таковой существует
+     * 
+     * @param string $token id пользователя
+     * 
+     * @return App\Models\User|null
+     */
+    public static function getByToken(string $token): ?User
     {
         try {
             $user = self::firstWhere('id', $token);
@@ -102,6 +134,11 @@ class User extends Authenticatable
     }
 
 
+    /**
+     * Удаляет токен доступа API для пользователя
+     * 
+     * @return bool
+     */
     public function deleteApiToken(): bool
     {
         try {
